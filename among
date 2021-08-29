@@ -1,3 +1,11 @@
+for i,v in next, game:GetService("Players").LocalPlayer.Character:GetDescendants() do
+if v:IsA("BasePart") and v.Name ~="HumanoidRootPart" then 
+game:GetService("RunService").Heartbeat:connect(function()
+v.Velocity = Vector3.new(-30,0,0)
+end)
+end
+end
+
 power = 500 
 
 game:GetService("RunService").Stepped:connect(function()
@@ -743,12 +751,5 @@ while Humanoid.Health > 0 do
   RightHip.C0=RightHip.C0:Lerp(RightHipOrigin*CFrame.new(0,0,0)*CFrame.Angles(0 + RightLeg.RotVelocity.Y / 70,0,math.cos(tick()*7)/1),0.1)
   LeftHip.C0=LeftHip.C0:Lerp(LeftHipOrigin*CFrame.new(0,0,0)*CFrame.Angles(0 - LeftLeg.RotVelocity.Y / 70,0,math.cos(tick()*7)/1),0.1)
   RootJoint.C0=RootJoint.C0:Lerp(RootJointOrigin*CFrame.new(0,0,-20)*CFrame.Angles(0,0 - RootPart.RotVelocity.Y / 70 ,0),0.1)
-end
-for i,v in next, game:GetService("Players").LocalPlayer.Character:GetDescendants() do
-if v:IsA("BasePart") and v.Name ~="HumanoidRootPart" then 
-game:GetService("RunService").Heartbeat:connect(function()
-v.Velocity = Vector3.new(-30,0,0)
-end)
-end
 end
 end
