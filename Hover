@@ -278,6 +278,85 @@ for _, v in next, DeadChar:GetChildren() do
 	end
 end
 
+local bv = Instance.new("BodyVelocity", v)
+bv.Velocity = Vector3.new(0, 0, 0)
+bv.MaxForce = Vector3.new(0, 0, 0)
+workspace.FallenPartsDestroyHeight = 0 / 0
+local char = workspace[game.Players.LocalPlayer.Name]
+local v = char["Right Arm"]
+for _, v in pairs(v:GetChildren()) do
+	if v:IsA("Attachment") and not string.find(v.Name:lower(), "attachment") then
+		v:Destroy()
+	end
+end
+local c = char.Dummy.Dummy["Right Arm"]
+local ath = Instance.new("Attachment", c)
+ath.Name = "nil"
+coroutine.wrap(function()
+	local con
+			local function tpmeyes()
+		v.CanCollide = false
+		v.CFrame = c.CFrame
+	end
+	con = game["Run Service"].Heartbeat:connect(tpmeyes)
+end)()
+workspace.FallenPartsDestroyHeight = 0 / 0
+local char = workspace[game.Players.LocalPlayer.Name]
+local v = char["Left Arm"]
+for _, v in pairs(v:GetChildren()) do
+	if v:IsA("Attachment") and not string.find(v.Name:lower(), "attachment") then
+		v:Destroy()
+	end
+end
+local c = char.Dummy.Dummy["Left Arm"]
+local ath = Instance.new("Attachment", c)
+ath.Name = "nil"
+coroutine.wrap(function()
+	local con
+			local function tpmeyes()
+		v.CanCollide = false
+		v.CFrame = c.CFrame
+	end
+	con = game["Run Service"].Heartbeat:connect(tpmeyes)
+end)()
+workspace.FallenPartsDestroyHeight = 0 / 0
+local char = workspace[game.Players.LocalPlayer.Name]
+local v = char["Left Leg"]
+for _, v in pairs(v:GetChildren()) do
+	if v:IsA("Attachment") and not string.find(v.Name:lower(), "attachment") then
+		v:Destroy()
+	end
+end
+local c = char.Dummy.Dummy["Left Leg"]
+local ath = Instance.new("Attachment", c)
+ath.Name = "nil"
+coroutine.wrap(function()
+	local con
+			local function tpmeyes()
+		v.CanCollide = false
+		v.CFrame = c.CFrame
+	end
+	con = game["Run Service"].Heartbeat:connect(tpmeyes)
+end)()
+workspace.FallenPartsDestroyHeight = 0 / 0
+local char = workspace[game.Players.LocalPlayer.Name]
+local v = char["Right Leg"]
+for _, v in pairs(v:GetChildren()) do
+	if v:IsA("Attachment") and not string.find(v.Name:lower(), "attachment") then
+		v:Destroy()
+	end
+end
+local c = char.Dummy.Dummy["Right Leg"]
+local ath = Instance.new("Attachment", c)
+ath.Name = "nil"
+coroutine.wrap(function()
+	local con
+			local function tpmeyes()
+		v.CanCollide = false
+		v.CFrame = c.CFrame
+	end
+	con = game["Run Service"].Heartbeat:connect(tpmeyes)
+end)()
 
 workspace.FallenPartsDestroyHeight = 0 / 0
 local char = workspace[game.Players.LocalPlayer.Name]
