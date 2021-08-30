@@ -437,7 +437,7 @@ local add = Instance.new("Weld")
 add.Parent = plr.Character["HumanoidRootPart"]
 add.Part0 = plr.Character["Kate Hair"].Handle
 add.Part1 = plr.Character["HumanoidRootPart"]
-add.C1 = CFrame.new(-0.5,-20,-0)*CFrame.Angles(math.rad(0),0,0)
+add.C1 = CFrame.new(-0.5,0,0)*CFrame.Angles(math.rad(90),0,0)
 
 plr.Character["Pink Hair"].Handle.AccessoryWeld:Destroy()
 
@@ -445,7 +445,7 @@ local adds = Instance.new("Weld")
 adds.Parent = plr.Character["HumanoidRootPart"]
 adds.Part0 = plr.Character["Pink Hair"].Handle
 adds.Part1 = plr.Character["HumanoidRootPart"]
-adds.C1 = CFrame.new(0.5,-20,-0)*CFrame.Angles(math.rad(0),0,0)
+adds.C1 = CFrame.new(0.5,0,0)*CFrame.Angles(math.rad(90),0,0)
 
 
 
@@ -779,8 +779,8 @@ mouse.KeyDown:connect(function(key)
     ATTACK = true
           game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 50
             game.Players.LocalPlayer.Character.Humanoid.JumpPower = 0
-        adds.C1 = CFrame.new(0.5,-20,-0)*CFrame.Angles(math.rad(0),0,0)
-add.C1 = CFrame.new(-0.5,-20,-0)*CFrame.Angles(math.rad(0),0,0)
+        adds.C1 = CFrame.new(0.5,0,-0)*CFrame.Angles(math.rad(90),0,0)
+add.C1 = CFrame.new(-0.5,0,-0)*CFrame.Angles(math.rad(90),0,0)
   end
   end
 end)
@@ -796,8 +796,8 @@ add.C1 = CFrame.new(-0.5,-3.3,-0)*CFrame.Angles(math.rad(0),0,0)
 ATTACK=false
 
     wait(1.2)
-        adds.C1 = CFrame.new(0.5,-20,-0)*CFrame.Angles(math.rad(0),0,0)
-add.C1 = CFrame.new(-0.5,-20,-0)*CFrame.Angles(math.rad(0),0,0)
+        adds.C1 = CFrame.new(0.5,0,-0)*CFrame.Angles(math.rad(90),0,0)
+add.C1 = CFrame.new(-0.5,0,-0)*CFrame.Angles(math.rad(90),0,0)
           game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
             game.Players.LocalPlayer.Character.Humanoid.JumpPower = 62
   end
