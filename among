@@ -779,8 +779,8 @@ mouse.KeyDown:connect(function(key)
     ATTACK = true
           game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 50
             game.Players.LocalPlayer.Character.Humanoid.JumpPower = 0
-        adds.C1 = CFrame.new(0.5,0,-0)*CFrame.Angles(math.rad(90),0,0)
-add.C1 = CFrame.new(-0.5,0,-0)*CFrame.Angles(math.rad(90),0,0)
+        adds.C1 = CFrame.new(0.5,-5,-0)*CFrame.Angles(math.rad(90),0,0)
+add.C1 = CFrame.new(-0.5,-5,-0)*CFrame.Angles(math.rad(90),0,0)
   end
   end
 end)
