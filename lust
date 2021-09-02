@@ -12,8 +12,15 @@ bambam.Parent = game.Players.LocalPlayer.Character.Torso
 bambam.Force = Vector3.new(power,0,power)
 bambam.Location = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
 
+
+
+game.Players.LocalPlayer.Character["Pal Hair"].Handle.Mesh:Destroy()
+game.Players.LocalPlayer.Character["Pink Hair"].Handle.Mesh:Destroy()
+game.Players.LocalPlayer.Character["Kate Hair"].Handle.Mesh:Destroy()
+game.Players.LocalPlayer.Character["LavanderHair"].Handle.Mesh:Destroy()
 game.Players.LocalPlayer.Character["Hat1"].Handle.Mesh:Destroy()
 game.Players.LocalPlayer.Character["Robloxclassicred"].Handle.Mesh:Destroy()
+
 
 local Animate = game.Players.LocalPlayer.Character.Animate
 HumanDied = false
@@ -277,87 +284,6 @@ for _, v in next, DeadChar:GetChildren() do
 		end
 	end
 end
-
-local bv = Instance.new("BodyVelocity", v)
-bv.Velocity = Vector3.new(0, 0, 0)
-bv.MaxForce = Vector3.new(0, 0, 0)
-workspace.FallenPartsDestroyHeight = 0 / 0
-local char = workspace[game.Players.LocalPlayer.Name]
-local v = char["Right Arm"]
-for _, v in pairs(v:GetChildren()) do
-	if v:IsA("Attachment") and not string.find(v.Name:lower(), "attachment") then
-		v:Destroy()
-	end
-end
-local c = char.Dummy.Dummy["Right Arm"]
-local ath = Instance.new("Attachment", c)
-ath.Name = "nil"
-coroutine.wrap(function()
-	local con
-			local function tpmeyes()
-		v.CanCollide = false
-		v.CFrame = c.CFrame
-	end
-	con = game["Run Service"].Heartbeat:connect(tpmeyes)
-end)()
-workspace.FallenPartsDestroyHeight = 0 / 0
-local char = workspace[game.Players.LocalPlayer.Name]
-local v = char["Left Arm"]
-for _, v in pairs(v:GetChildren()) do
-	if v:IsA("Attachment") and not string.find(v.Name:lower(), "attachment") then
-		v:Destroy()
-	end
-end
-local c = char.Dummy.Dummy["Left Arm"]
-local ath = Instance.new("Attachment", c)
-ath.Name = "nil"
-coroutine.wrap(function()
-	local con
-			local function tpmeyes()
-		v.CanCollide = false
-		v.CFrame = c.CFrame
-	end
-	con = game["Run Service"].Heartbeat:connect(tpmeyes)
-end)()
-workspace.FallenPartsDestroyHeight = 0 / 0
-local char = workspace[game.Players.LocalPlayer.Name]
-local v = char["Left Leg"]
-for _, v in pairs(v:GetChildren()) do
-	if v:IsA("Attachment") and not string.find(v.Name:lower(), "attachment") then
-		v:Destroy()
-	end
-end
-local c = char.Dummy.Dummy["Left Leg"]
-local ath = Instance.new("Attachment", c)
-ath.Name = "nil"
-coroutine.wrap(function()
-	local con
-			local function tpmeyes()
-		v.CanCollide = false
-		v.CFrame = c.CFrame
-	end
-	con = game["Run Service"].Heartbeat:connect(tpmeyes)
-end)()
-workspace.FallenPartsDestroyHeight = 0 / 0
-local char = workspace[game.Players.LocalPlayer.Name]
-local v = char["Right Leg"]
-for _, v in pairs(v:GetChildren()) do
-	if v:IsA("Attachment") and not string.find(v.Name:lower(), "attachment") then
-		v:Destroy()
-	end
-end
-local c = char.Dummy.Dummy["Right Leg"]
-local ath = Instance.new("Attachment", c)
-ath.Name = "nil"
-coroutine.wrap(function()
-	local con
-			local function tpmeyes()
-		v.CanCollide = false
-		v.CFrame = c.CFrame
-	end
-	con = game["Run Service"].Heartbeat:connect(tpmeyes)
-end)()
-
 workspace.FallenPartsDestroyHeight = 0 / 0
 local char = workspace[game.Players.LocalPlayer.Name]
 local v = char.Torso
@@ -405,6 +331,38 @@ local mouse = plr:GetMouse()
 
 plr.Character.Torso.BodyThrust:Destroy()
 
+plr.Character["Pal Hair"].Handle.AccessoryWeld:Destroy()
+
+local weld = Instance.new("Weld")
+weld.Parent = plr.Character["Left Leg"]
+weld.Part0 = plr.Character["Pal Hair"].Handle
+weld.Part1 = plr.Character["Left Leg"]
+weld.C1 = CFrame.new(0,0,0)*CFrame.Angles(math.rad(90),0,0)
+
+plr.Character["Pink Hair"].Handle.AccessoryWeld:Destroy()
+
+local fasf = Instance.new("Weld")
+fasf.Parent = plr.Character["Right Leg"]
+fasf.Part0 = plr.Character["Pink Hair"].Handle
+fasf.Part1 = plr.Character["Right Leg"]
+fasf.C1 = CFrame.new(0,0,0)*CFrame.Angles(math.rad(90),0,0)
+
+plr.Character["LavanderHair"].Handle.AccessoryWeld:Destroy()
+
+local nas = Instance.new("Weld")
+nas.Parent = plr.Character["Left Arm"]
+nas.Part0 = plr.Character["LavanderHair"].Handle
+nas.Part1 = plr.Character["Left Arm"]
+nas.C1 = CFrame.new(0,0,0)*CFrame.Angles(math.rad(90),0,0)
+
+plr.Character["Kate Hair"].Handle.AccessoryWeld:Destroy()
+
+local asd = Instance.new("Weld")
+asd.Parent = plr.Character["Right Arm"]
+asd.Part0 = plr.Character["Kate Hair"].Handle
+asd.Part1 = plr.Character["Right Arm"]
+asd.C1 = CFrame.new(0,0,0)*CFrame.Angles(math.rad(90),0,0)
+
 plr.Character["Hat1"].Handle.AccessoryWeld:Destroy()
 
 local add = Instance.new("Weld")
@@ -420,6 +378,14 @@ adds.Parent = plr.Character["Torso"]
 adds.Part0 = plr.Character["Robloxclassicred"].Handle
 adds.Part1 = plr.Character["Torso"]
 adds.C1 = CFrame.new(0.5,0,0)*CFrame.Angles(math.rad(90),0,0)
+
+plr.Character["MediHood"].Handle.AccessoryWeld:Destroy()
+
+local Stem = Instance.new("Weld")
+Stem.Parent = plr.Character["Head"]
+Stem.Part0 = plr.Character["MediHood"].Handle
+Stem.Part1 = plr.Character["Head"]
+Stem.C1 = CFrame.new(0,0,0)*CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
 
 plr.Character["MeshPartAccessory"].Handle.AccessoryWeld:Destroy()
 
