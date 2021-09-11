@@ -1,0 +1,881 @@
+power = 500 
+
+game:GetService("RunService").Stepped:connect(function()
+game.Players.LocalPlayer.Character.Head.CanCollide = false
+game.Players.LocalPlayer.Character["Left Leg"].CanCollide = false
+game.Players.LocalPlayer.Character["Right Leg"].CanCollide = false
+end)
+
+wait(.1)
+local bambam = Instance.new("BodyThrust")
+bambam.Parent = game.Players.LocalPlayer.Character.Torso
+bambam.Location = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+
+
+
+game.Players.LocalPlayer.Character["Pal Hair"].Handle.Mesh:Destroy()
+game.Players.LocalPlayer.Character["Pink Hair"].Handle.Mesh:Destroy()
+game.Players.LocalPlayer.Character["Kate Hair"].Handle.Mesh:Destroy()
+game.Players.LocalPlayer.Character["LavanderHair"].Handle.Mesh:Destroy()
+game.Players.LocalPlayer.Character["Hat1"].Handle.Mesh:Destroy()
+game.Players.LocalPlayer.Character["Robloxclassicred"].Handle.Mesh:Destroy()
+game.Players.LocalPlayer.Character["LongStraightHair"].Handle.Mesh:Destroy()
+
+
+local Animate = game.Players.LocalPlayer.Character.Animate
+HumanDied = false
+local count = 1
+function Align(Part0, Part1, Position, Angle)
+	local AlignPos = Instance.new('AlignPosition', Part1);
+	AlignPos.Name = "AliP_" .. count
+	AlignPos.ApplyAtCenterOfMass = true;
+	AlignPos.MaxForce = 5772000--67752;
+	AlignPos.MaxVelocity = math.huge / 9e110;
+	AlignPos.ReactionForceEnabled = false;
+	AlignPos.Responsiveness = 200;
+	AlignPos.RigidityEnabled = true;
+	local AlignOri = Instance.new('AlignOrientation', Part1);
+	AlignOri.Name = "AliO_" .. count
+	AlignOri.MaxAngularVelocity = math.huge / 9e110;
+	AlignOri.MaxTorque = 5772000
+	AlignOri.PrimaryAxisOnly = false;
+	AlignOri.ReactionTorqueEnabled = false;
+	AlignOri.Responsiveness = 200;
+	AlignOri.RigidityEnabled = true;
+	local AttachmentA = Instance.new('Attachment', Part1);
+	AttachmentA.Name = "Ath_" .. count
+	local AttachmentB = Instance.new('Attachment', Part0);
+	AttachmentB.Name = "Ath_" .. count
+	AttachmentA.Orientation = Angle or Vector3.new(0, 0, 0)
+	AttachmentA.Position = Position or Vector3.new(0, 0, 0)
+	AlignPos.Attachment1 = AttachmentA;
+	AlignPos.Attachment0 = AttachmentB;
+	AlignOri.Attachment1 = AttachmentA;
+	AlignOri.Attachment0 = AttachmentB;
+	count = count + 1
+	spawn(function()
+		while wait() do
+			Part0.RotVelocity = Vector3.new(0, 0, 0)
+			Part0.Velocity = Vector3.new(30, 0, 0)
+			Part0.AssemblyLinearVelocity = -Part0.Velocity
+		end
+	end)
+
+	game:GetService("RunService").Stepped:Connect(function()
+		for _, v in pairs(game:GetService("Players").LocalPlayer.Character:GetChildren()) do
+			if v:IsA("Part") then
+				v.CanCollide = false
+			end
+			if v:IsA("Accessory") then
+				v.Handle.CanCollide = false
+			end
+		end
+	end)
+	return {
+		AlignPos,
+		AlignOri,
+		AttachmentA,
+		AttachmentB
+	}
+end
+if _G.netted ~= true then
+	_G.netted = true
+	coroutine.wrap(function()
+		settings().Physics.PhysicsEnvironmentalThrottle = Enum.EnviromentalPhysicsThrottle.Disabled
+		settings().Physics.AllowSleep = false
+	end)()
+end
+game:FindFirstChildOfClass("Players").LocalPlayer["Character"].Archivable = true
+local hatnameclone = {}
+for _, v in next, game:FindFirstChildOfClass("Players").LocalPlayer["Character"]:GetChildren() do
+	if v:IsA("Accessory") then
+		if hatnameclone[v.Name] then
+			if hatnameclone[v.Name] == "s" then
+				hatnameclone[v.Name] = {}
+			end
+			table.insert(hatnameclone[v.Name], v)
+		else
+			hatnameclone[v.Name] = "s"
+		end
+	end
+end
+for _, v in pairs(hatnameclone) do
+	if type(v) == "table" then
+		local num = 1
+		for _, w in pairs(v) do
+			w.Name = w.Name .. num
+			num = num + 1
+		end
+	end
+end
+hatnameclone = nil
+local DeadChar = game:FindFirstChildOfClass("Players").LocalPlayer.Character
+local fldr = Instance.new("Folder", game:FindFirstChildOfClass("Players").LocalPlayer["Character"])
+fldr.Name = "Dummy"
+local CloneChar = DeadChar:Clone()
+local ANIMATIONHERE
+if CloneChar:FindFirstChild("Animate") then
+	ANIMATIONHERE = CloneChar:FindFirstChild("Animate"):Clone()
+	CloneChar:FindFirstChild("Animate"):Destroy()
+end
+if CloneChar:FindFirstChildOfClass("Folder") then
+	CloneChar:FindFirstChildOfClass("Folder"):Destroy()
+end
+if CloneChar.Torso:FindFirstChild("Neck") then
+	local Clonessss = CloneChar.Torso:FindFirstChild("Neck"):Clone()
+	Clonessss.Part0 = nil
+	Clonessss.Part1 = DeadChar.Head
+	Clonessss.Parent = DeadChar.Torso
+end
+CloneChar.Parent = fldr
+CloneChar.HumanoidRootPart.CFrame = DeadChar.HumanoidRootPart.CFrame
+CloneChar.Humanoid.BreakJointsOnDeath = false
+CloneChar.Name = "Dummy"
+CloneChar.Humanoid.DisplayDistanceType = "None"
+for _, v in next, DeadChar:GetChildren() do
+	if v:IsA("Accessory") then
+		local topacc = false
+		if v.Handle:FindFirstChildOfClass("Weld") then
+			v.Handle:FindFirstChildOfClass("Weld"):Destroy()
+		end
+		v.Handle.Massless = true
+		v.Handle.CanCollide = false
+		coroutine.wrap(function()
+			if topacc then
+				local allthings = Align(v.Handle, DeadChar.Torso, Vector3.new(0, 1.5, 0) + (DeadChar.Head[topacc].Position + (v.Handle[topacc].Position * -1)), Vector3.new(0, 0, 0))
+				local normaltop = allthings[1].Attachment1
+				local alipos = allthings[1]
+				local alirot = allthings[2]
+				local p0 = v.Handle
+				local p1 = DeadChar.Head
+				alipos.Parent = CloneChar:FindFirstChild(v.Name).Handle
+				alirot.Parent = CloneChar:FindFirstChild(v.Name).Handle
+				while true do
+					game:GetService("RunService").RenderStepped:wait()
+					if HumanDied then
+						break
+					end
+					coroutine.wrap(function()
+						if alipos.Attachment1 == normaltop then
+							p0.CFrame = p0.CFrame:lerp((((DeadChar.Torso.CFrame * CFrame.new(0, 1.5, 0)) * p1[topacc].CFrame) * p0[topacc].CFrame:inverse()), 1)
+						else
+							v.Handle.CFrame = v.Handle.CFrame:lerp(alipos.Attachment1.Parent.CFrame * CFrame.new(alipos.Attachment1.Position) * CFrame.Angles(math.rad(alipos.Attachment1.Rotation.X), math.rad(alipos.Attachment1.Rotation.Y), math.rad(alipos.Attachment1.Rotation.Z)), 1)
+						end
+					end)()
+				end
+			else
+				Align(v.Handle, CloneChar[v.Name].Handle, Vector3.new(0, 0, 0), Vector3.new(0, 0, 0))
+			end
+		end)()
+	end
+end
+local a = DeadChar.Torso
+local b = DeadChar.HumanoidRootPart
+local c = DeadChar.Humanoid
+a.Parent = game:FindFirstChildOfClass("Workspace")
+c.Parent = game:FindFirstChildOfClass("Workspace")
+local told = a:Clone()
+local told1 = c:Clone()
+b["RootJoint"].Part0 = told
+b["RootJoint"].Part1 = DeadChar.Head
+a.Name = "torso"
+a.Neck:Destroy()
+told.Parent = DeadChar
+told1.Parent = DeadChar
+DeadChar.PrimaryPart = told
+told1.Health = 0
+b:Destroy()
+a.Parent = DeadChar
+c.Parent = DeadChar
+told:Destroy()
+told1:Destroy()
+a.Name = "Torso"
+if CloneChar.Head:FindFirstChildOfClass("Decal") then
+	CloneChar.Head:FindFirstChildOfClass("Decal").Transparency = 1
+end
+if DeadChar:FindFirstChild("Animate") then
+	DeadChar:FindFirstChild("Animate"):Destroy()
+end
+local Collider
+function UnCollide()
+	if HumanDied then
+		Collider:Disconnect();
+		return
+	end
+	for _, Parts in next, DeadChar:GetChildren() do
+		if Parts:IsA("BasePart") then
+			Parts.CanCollide = false
+		end
+	end
+end
+Collider = game:GetService("RunService").Stepped:Connect(UnCollide)
+local resetBindable = Instance.new("BindableEvent")
+resetBindable.Event:connect(function()
+	game:GetService("StarterGui"):SetCore("ResetButtonCallback", true)
+	resetBindable:Destroy()
+	HumanDied = true
+	pcall(function()
+		game:FindFirstChildOfClass("Players").LocalPlayer.Character = DeadChar
+		DeadChar.Head:Destroy()
+		DeadChar:FindFirstChildOfClass("Humanoid"):Destroy()
+		game:FindFirstChildOfClass("Players").LocalPlayer.Character = CloneChar
+		if DeadChar:FindFirstChildOfClass("Folder") then
+			DeadChar:FindFirstChildOfClass("Folder"):Destroy()
+		end
+	end)
+end)
+game:GetService("StarterGui"):SetCore("ResetButtonCallback", resetBindable)
+coroutine.wrap(function()
+	while true do
+		game:GetService("RunService").RenderStepped:wait()
+		if not CloneChar or not CloneChar:FindFirstChild("Head") or not CloneChar:FindFirstChildOfClass("Humanoid") or CloneChar:FindFirstChildOfClass("Humanoid").Health <= 0 and not DeadChar or not DeadChar:FindFirstChild("Head") or not DeadChar:FindFirstChildOfClass("Humanoid") or DeadChar:FindFirstChildOfClass("Humanoid").Health <= 0 then
+			HumanDied = true
+			pcall(function()
+				game:FindFirstChildOfClass("Players").LocalPlayer.Character = DeadChar
+				DeadChar.Head:Destroy()
+				DeadChar:FindFirstChildOfClass("Humanoid"):Destroy()
+				game:FindFirstChildOfClass("Players").LocalPlayer.Character = CloneChar
+				if DeadChar:FindFirstChildOfClass("Folder") then
+					DeadChar:FindFirstChildOfClass("Folder"):Destroy()
+				end
+			end)
+			if resetBindable then
+				game:GetService("StarterGui"):SetCore("ResetButtonCallback", true)
+				resetBindable:Destroy()
+			end
+			break
+		end
+	end
+end)()
+
+
+for _, v in pairs(DeadChar:GetChildren()) do
+	if v:IsA("BasePart") and v.Name ~= "Head" then
+	elseif v:IsA("BasePart") and v.Name == "Head" then
+		coroutine.wrap(function()
+			while true do
+				game:GetService("RunService").RenderStepped:wait()
+				if HumanDied then
+					break
+				end
+				v.CFrame = DeadChar.Torso.CFrame * CFrame.new(0, 1.5, 0)
+			end
+		end)()
+	end
+end
+for _, BodyParts in next, CloneChar:GetDescendants() do
+	if BodyParts:IsA("BasePart") or BodyParts:IsA("Part") then
+		BodyParts.Transparency = 1
+	end
+end
+game:GetService("RunService").RenderStepped:wait()
+game:FindFirstChildOfClass("Players").LocalPlayer.Character = CloneChar
+game:FindFirstChildOfClass("Workspace"):FindFirstChildOfClass("Camera").CameraSubject = CloneChar.Humanoid
+for _, v in next, DeadChar:GetChildren() do
+	if v:IsA("Accessory") then
+		if v.Handle:FindFirstChildOfClass("Weld") then
+			v.Handle:FindFirstChildOfClass("Weld"):Destroy()
+		end
+		if v.Handle:FindFirstChildOfClass("AccessoryWeld") then
+			v.Handle:FindFirstChildOfClass("AccessoryWeld"):Destroy()
+		end
+		if v.Handle:FindFirstChildOfClass("BodyBackAttachment") then
+			v.Handle:FindFirstChildOfClass("BodyBackAttachment"):Destroy()
+		end
+	end
+end
+
+
+workspace.FallenPartsDestroyHeight = 0 / 0
+local char = workspace[game.Players.LocalPlayer.Name]
+local v = char.Torso
+for _, v in pairs(v:GetChildren()) do
+	if v:IsA("Attachment") and not string.find(v.Name:lower(), "attachment") then
+		v:Destroy()
+	end
+end
+
+local bv = Instance.new("BodyVelocity", v)
+bv.Velocity = Vector3.new(0, 0, 0)
+bv.MaxForce = Vector3.new(0, 0, 0)
+workspace.FallenPartsDestroyHeight = 0 / 0
+local char = workspace[game.Players.LocalPlayer.Name]
+local v = char["Right Arm"]
+for _, v in pairs(v:GetChildren()) do
+	if v:IsA("Attachment") and not string.find(v.Name:lower(), "attachment") then
+		v:Destroy()
+	end
+end
+local c = char.Dummy.Dummy["Right Arm"]
+local ath = Instance.new("Attachment", c)
+ath.Name = "nil"
+coroutine.wrap(function()
+	local con
+			local function tpmeyes()
+		v.CanCollide = false
+		v.CFrame = c.CFrame
+	end
+	con = game["Run Service"].Heartbeat:connect(tpmeyes)
+end)()
+workspace.FallenPartsDestroyHeight = 0 / 0
+local char = workspace[game.Players.LocalPlayer.Name]
+local v = char["Left Arm"]
+for _, v in pairs(v:GetChildren()) do
+	if v:IsA("Attachment") and not string.find(v.Name:lower(), "attachment") then
+		v:Destroy()
+	end
+end
+local c = char.Dummy.Dummy["Left Arm"]
+local ath = Instance.new("Attachment", c)
+ath.Name = "nil"
+coroutine.wrap(function()
+	local con
+			local function tpmeyes()
+		v.CanCollide = false
+		v.CFrame = c.CFrame
+	end
+	con = game["Run Service"].Heartbeat:connect(tpmeyes)
+end)()
+workspace.FallenPartsDestroyHeight = 0 / 0
+local char = workspace[game.Players.LocalPlayer.Name]
+local v = char["Left Leg"]
+for _, v in pairs(v:GetChildren()) do
+	if v:IsA("Attachment") and not string.find(v.Name:lower(), "attachment") then
+		v:Destroy()
+	end
+end
+local c = char.Dummy.Dummy["Left Leg"]
+local ath = Instance.new("Attachment", c)
+ath.Name = "nil"
+coroutine.wrap(function()
+	local con
+			local function tpmeyes()
+		v.CanCollide = false
+		v.CFrame = c.CFrame
+	end
+	con = game["Run Service"].Heartbeat:connect(tpmeyes)
+end)()
+workspace.FallenPartsDestroyHeight = 0 / 0
+local char = workspace[game.Players.LocalPlayer.Name]
+local v = char["Right Leg"]
+for _, v in pairs(v:GetChildren()) do
+	if v:IsA("Attachment") and not string.find(v.Name:lower(), "attachment") then
+		v:Destroy()
+	end
+end
+local c = char.Dummy.Dummy["Right Leg"]
+local ath = Instance.new("Attachment", c)
+ath.Name = "nil"
+coroutine.wrap(function()
+	local con
+			local function tpmeyes()
+		v.CanCollide = false
+		v.CFrame = c.CFrame
+	end
+	con = game["Run Service"].Heartbeat:connect(tpmeyes)
+end)()
+local c = char.Dummy.Dummy.Torso
+local ath = Instance.new("Attachment", c)
+ath.Name = "nil"
+
+local char = workspace[game.Players.LocalPlayer.Name]
+for i, hat1 in pairs(char:GetChildren()) do
+	if hat1.ClassName == "Accessory" then
+		workspace.FallenPartsDestroyHeight = 0 / 0
+		local v = hat1.Handle
+		for _, v in pairs(v:GetChildren()) do
+			if v:IsA("Attachment") and not string.find(v.Name:lower(), "attachment") then
+				v:Destroy()
+			end
+		end
+		for i, hat2 in pairs(char.Dummy.Dummy:GetChildren()) do
+			if hat2.Name == hat1.Name then
+				local c = hat2.Handle
+				local ath = Instance.new("Attachment", c)
+				ath.Name = "nil"
+				coroutine.wrap(function()
+					local con
+					local function tpmeyes()
+						v.CanCollide = false
+						v.CFrame = c.CFrame
+					end
+					con = game["Run Service"].Heartbeat:connect(tpmeyes)
+				end)()
+			end
+		end
+	end
+end
+local e = Animate:Clone()
+e.Parent = game.Players.LocalPlayer.Character
+local plr = game.Players.LocalPlayer
+
+plr.Character.Torso.BodyThrust:Destroy()
+bambam.Force = Vector3.new(power,0,power)
+
+plr.Character["Pal Hair"].Handle.AccessoryWeld:Destroy()
+
+local weld = Instance.new("Weld")
+weld.Parent = plr.Character["Left Leg"]
+weld.Part0 = plr.Character["Pal Hair"].Handle
+weld.Part1 = plr.Character["Left Leg"]
+weld.C1 = CFrame.new(0,-2,0)*CFrame.Angles(math.rad(90),0,0)
+
+plr.Character["Pink Hair"].Handle.AccessoryWeld:Destroy()
+
+local fasf = Instance.new("Weld")
+fasf.Parent = plr.Character["Right Leg"]
+fasf.Part0 = plr.Character["Pink Hair"].Handle
+fasf.Part1 = plr.Character["Right Leg"]
+fasf.C1 = CFrame.new(0,-2,0)*CFrame.Angles(math.rad(90),0,0)
+
+plr.Character["LavanderHair"].Handle.AccessoryWeld:Destroy()
+
+local nas = Instance.new("Weld")
+nas.Parent = plr.Character["Left Arm"]
+nas.Part0 = plr.Character["LavanderHair"].Handle
+nas.Part1 = plr.Character["Left Arm"]
+nas.C1 = CFrame.new(0,-2,0)*CFrame.Angles(math.rad(90),0,0)
+game.Players.LocalPlayer.Character["LavanderHair"].Handle.Touched:Connect(function(Object)
+    if Object.Parent:FindFirstChild("Humanoid") then
+
+                            v.CFrame = Object.Parent:FindFirstChild("HumanoidRootPart").CFrame
+
+       end
+end)
+plr.Character["Kate Hair"].Handle.AccessoryWeld:Destroy()
+
+local asd = Instance.new("Weld")
+asd.Parent = plr.Character["Right Arm"]
+asd.Part0 = plr.Character["Kate Hair"].Handle
+asd.Part1 = plr.Character["Right Arm"]
+asd.C1 = CFrame.new(0,-2,0)*CFrame.Angles(math.rad(90),0,0)
+game.Players.LocalPlayer.Character["Kate Hair"].Handle.Touched:Connect(function(Object)
+    if Object.Parent:FindFirstChild("Humanoid") then
+
+                            v.CFrame = Object.Parent:FindFirstChild("HumanoidRootPart").CFrame
+
+       end
+end)
+plr.Character["Hat1"].Handle.AccessoryWeld:Destroy()
+
+local add = Instance.new("Weld")
+add.Parent = plr.Character["Torso"]
+add.Part0 = plr.Character["Hat1"].Handle
+add.Part1 = plr.Character["Torso"]
+add.C1 = CFrame.new(-0,0,-0.5)*CFrame.Angles(math.rad(90),0,0)
+game.Players.LocalPlayer.Character["Hat1"].Handle.Touched:Connect(function(Object)
+    if Object.Parent:FindFirstChild("Humanoid") then
+
+                            v.CFrame = Object.Parent:FindFirstChild("HumanoidRootPart").CFrame
+
+       end
+end)
+plr.Character["Robloxclassicred"].Handle.AccessoryWeld:Destroy()
+
+local adds = Instance.new("Weld")
+adds.Parent = plr.Character["Torso"]
+adds.Part0 = plr.Character["Robloxclassicred"].Handle
+adds.Part1 = plr.Character["Torso"]
+adds.C1 = CFrame.new(0,0,0.5)*CFrame.Angles(math.rad(90),0,0)
+game.Players.LocalPlayer.Character["Robloxclassicred"].Handle.Touched:Connect(function(Object)
+    if Object.Parent:FindFirstChild("Humanoid") then
+
+                            v.CFrame = Object.Parent:FindFirstChild("HumanoidRootPart").CFrame
+
+       end
+end)
+plr.Character["MediHood"].Handle.AccessoryWeld:Destroy()
+
+local Stem = Instance.new("Weld")
+Stem.Parent = plr.Character["Head"]
+Stem.Part0 = plr.Character["MediHood"].Handle
+Stem.Part1 = plr.Character["Head"]
+Stem.C1 = CFrame.new(0,0,0)*CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+
+plr.Character["LongStraightHair"].Handle.AccessoryWeld:Destroy()
+
+local tors = Instance.new("Weld")
+tors.Parent = plr.Character["Torso"]
+tors.Part0 = plr.Character["LongStraightHair"].Handle
+tors.Part1 = plr.Character["Torso"]
+tors.C1 = CFrame.new(0,-3.5,0)*CFrame.Angles(math.rad(0),math.rad(-90),math.rad(0))
+game.Players.LocalPlayer.Character["LongStraightHair"].Handle.Touched:Connect(function(Object)
+    if Object.Parent:FindFirstChild("Humanoid") then
+
+                            v.CFrame = Object.Parent:FindFirstChild("HumanoidRootPart").CFrame
+
+       end
+end)
+local objects = game:GetObjects("rbxassetid://7451228522")
+
+objects[1].Parent = game.Players.LocalPlayer.Character
+
+Player = game.Players.LocalPlayer
+local script = Player.Character.Folder
+wait(1)
+local scp = Player.Character
+local torso = scp.Torso
+local head = scp.Head
+for i,v in pairs(script:GetChildren())do
+	if v:isA"Sound"then
+		v.Parent=head
+	end
+end
+for i,v in pairs(script["SCP-096"]:children())do
+	if v:isA"BasePart"then
+		if scp:findFirstChild(v.Name)then
+			scp[v.Name].Size=v.Size
+		end
+	end
+end
+script["This is what player sees after death"].Parent=scp
+local leftarm = scp["Left Arm"]
+local rightarm = scp["Right Arm"]
+local leftleg = scp["Left Leg"]
+local rightleg = scp["Right Leg"]
+local scphumanoid = scp.Humanoid
+local deathgui = scp["This is what player sees after death"].Death
+local idlesound = head["SCP-096 (Idle) v0.2"]
+local chasesound = head["SCP-096 v0.8-0.9 Chasing Ambience(096_3)"]
+local ragesound = head["SCP-096 (Face Viewed)"]
+local screamsound = head["SCP-096 Scream (raging)"]
+local killsomeone = head["Guard attacked by SCP-096 (Old sound)"]
+local face = head:findFirstChildOfClass"Decal"
+local heartbeat = game:GetService("RunService").Heartbeat
+--Motor6D's
+local neck = torso.Neck
+local leftshoulder = torso["Left Shoulder"]
+local rightshoulder = torso["Right Shoulder"]
+local lefthip = torso["Left Hip"]
+local righthip = torso["Right Hip"]
+local root = scp.HumanoidRootPart.RootJoint
+local tor=script["SCP-096"].Torso
+neck.C0=tor.Neck.C0*CFrame.Angles(0,0,0)
+neck.C1=tor.Neck.C1*CFrame.Angles(0,math.rad(270),0)
+leftshoulder.C0=tor["Left Shoulder"].C0
+leftshoulder.C1=tor["Left Shoulder"].C1
+rightshoulder.C0=tor["Right Shoulder"].C0
+rightshoulder.C1=tor["Right Shoulder"].C1
+lefthip.C0=tor["Left Hip"].C0
+lefthip.C1=tor["Left Hip"].C1
+righthip.C0=tor["Right Hip"].C0
+righthip.C1=tor["Right Hip"].C1
+root.C0=script["SCP-096"].HumanoidRootPart.RootJoint.C0
+root.C1=script["SCP-096"].HumanoidRootPart.RootJoint.C1
+scp.Animate:Destroy()
+scp.Humanoid.Animator:destroy()
+script["SCP-096"]:destroy()
+--
+for i,v in pairs(scp:children())do
+	if v:isA"Accessory"then
+
+		elseif v:isA"BasePart"then
+			v.BrickColor=BrickColor.White()
+			elseif v:isA"Pants"then
+				v.PantsTemplate=""
+				elseif v:isA"Shirt"then
+					v.ShirtTemplate=""
+	end
+end
+local sight = 10
+local sitting = true
+local running = false
+local canchase = true
+scphumanoid.MaxHealth=999999999999999999999999999999999999999
+scphumanoid.Health=999999999999999999999999999999999999999
+scphumanoid.WalkSpeed = 0
+scphumanoid.JumpPower = 0
+face.Texture="http://www.roblox.com/asset/?id=146142799"
+local tag=script.Display:clone()
+script.Display:Destroy()
+
+
+
+function ragdollkill(character)
+
+end
+
+function chase(victim) --chase the player
+	if canchase then
+		canchase = false
+		local raaaaaageeee = true
+		sitting = false
+		running = false
+		local victimhead = victim.Head
+		local victimhumanoid = victim:findFirstChildOfClass("Humanoid")
+		idlesound:Stop()
+		ragesound:Play()
+		scphumanoid.WalkSpeed = 0
+		scphumanoid.JumpPower = 0
+		face.Texture = "http://www.roblox.com/asset/?id=168024772"
+		local function spasm()
+			while wait() do
+				if raaaaaageeee then
+					root.C0 = root.C0 * CFrame.new(math.random(-1,1)/50,math.random(-1,1)/50,math.random(-1,1)/50)
+					rightshoulder.C0 = rightshoulder.C0 * CFrame.new(math.random(-1,1)/50,math.random(-1,1)/50,math.random(-1,1)/50)
+					leftshoulder.C0 = leftshoulder.C0 * CFrame.new(math.random(-1,1)/50,math.random(-1,1)/50,math.random(-1,1)/50)
+					lefthip.C0 = lefthip.C0 * CFrame.new(math.random(-1,1)/50,math.random(-1,1)/50,math.random(-1,1)/50)
+					righthip.C0 = righthip.C0 * CFrame.new(math.random(-1,1)/50,math.random(-1,1)/50,math.random(-1,1)/50)
+					neck.C0 = neck.C0 * CFrame.new(math.random(-1,1)/50,math.random(-1,1)/50,math.random(-1,1)/50)
+					--
+					root.C0 = root.C0 * CFrame.fromEulerAnglesXYZ(math.random(-1,1)/50,math.random(-1,1)/50,math.random(-1,1)/50)
+					rightshoulder.C0 = rightshoulder.C0 * CFrame.fromEulerAnglesXYZ(math.random(-1,1)/50,math.random(-1,1)/50,math.random(-1,1)/50)
+					leftshoulder.C0 = leftshoulder.C0 * CFrame.fromEulerAnglesXYZ(math.random(-1,1)/50,math.random(-1,1)/50,math.random(-1,1)/50)
+					lefthip.C0 = lefthip.C0 * CFrame.fromEulerAnglesXYZ(math.random(-1,1)/50,math.random(-1,1)/50,math.random(-1,1)/50)
+					righthip.C0 = righthip.C0 * CFrame.fromEulerAnglesXYZ(math.random(-1,1)/50,math.random(-1,1)/50,math.random(-1,1)/50)
+					neck.C0 = neck.C0 * CFrame.fromEulerAnglesXYZ(math.random(-1,1)/50,math.random(-1,1)/50,math.random(-1,1)/50)
+				end
+			end
+		end
+		spawn(spasm)
+		for i = 0,0.1 , 0.0005 do --animate him
+			root.C0 = root.C0:lerp(CFrame.new(0, 0, 0, 0.98480773, 0.173648298, 0, -0.173648298, 0.98480773, 0, 0, 0, 1),i)
+			rightshoulder.C0 = rightshoulder.C0:lerp(CFrame.new(-0.800001144, 0.642426491, -1.80661774, 1, 0, 0, 0, -0.642787874, 0.766044259, 0, -0.766044259, -0.642787814),i)
+			leftshoulder.C0 = leftshoulder.C0:lerp(CFrame.new(-0.399999619, 0.675328255, 1.86571693, -1.1920929e-07, -1.49011612e-07, -0.99999994, -0.766044557, -0.642787516, 1.34110451e-07, -0.642787397, 0.766044497, -1.1920929e-07),i)
+			lefthip.C0 = lefthip.C0:lerp(CFrame.new(0, -3.5, 0.5, 0.98480773, -0.173648298, 0, 0.173648298, 0.98480773, 0, 0, 0, 1),i)
+			righthip.C0 = righthip.C0:lerp(CFrame.new(0, -3.5, -0.5, 0.98480773, -0.173648298, 0, 0.173648298, 0.98480773, 0, 0, 0, 1),i)
+			neck.C0 = neck.C0:lerp(CFrame.new(-1.90734863e-06, 2, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1),i)
+			heartbeat:wait()
+		end
+		for i = 1,27 do --loop
+			for i = 0.3,0.5 , 0.008 do --rage animation
+				root.C0 = root.C0:lerp(CFrame.new(0, 0, 0, 0.98480773, 0.163175985, -0.0593911894, -0.173648253, 0.925416589, -0.336824059, -1.86264515e-08, 0.342020094, 0.939692616),i)
+				rightshoulder.C0 = rightshoulder.C0:lerp(CFrame.new(-0.800001144, 0.642426491, -1.80661774, 1, 0, 0, 0, -0.642787874, 0.766044259, 0, -0.766044259, -0.642787814),i)
+				leftshoulder.C0 = leftshoulder.C0:lerp(CFrame.new(-0.399999619, 0.675328255, 1.86571693, -1.1920929e-07, -1.49011612e-07, -0.99999994, -0.766044557, -0.642787516, 1.34110451e-07, -0.642787397, 0.766044497, -1.1920929e-07),i)
+				lefthip.C0 = lefthip.C0:lerp(CFrame.new(-0.0297870636, -3.33106899, 1.07283974, 0.98480773, -0.163175955, -0.0593911335, 0.173648208, 0.925416708, 0.336823761, -2.60770321e-08, -0.342019826, 0.939692676),i)
+				righthip.C0 = righthip.C0:lerp(CFrame.new(0.0281715393, -3.65976715, -0.26830864, 0.98480773, -0.171010181, -0.0301537365, 0.173648298, 0.969846249, 0.171010152, -2.60770321e-08, -0.173648313, 0.984807611),i)
+				neck.C0 = neck.C0:lerp(CFrame.new(-1.90734863e-06, 2, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1),i)
+				heartbeat:wait()
+			end
+			for i = 0.3,0.5 , 0.008 do --rage animation
+				root.C0 = root.C0:lerp(CFrame.new(0, 0, 0, 0.934456408, -0.351089597, -0.0593911372, 0.312324762, 0.888258278, -0.336824119, 0.171010107, 0.29619813, 0.939692616),i)
+				rightshoulder.C0 = rightshoulder.C0:lerp(CFrame.new(-0.800001144, 0.642426491, -1.80661774, 1, 0, 0, 0, -0.642787874, 0.766044259, 0, -0.766044259, -0.642787814),i)
+				leftshoulder.C0 = leftshoulder.C0:lerp(CFrame.new(-0.399999619, 0.675328255, 1.86571693, -1.1920929e-07, -1.49011612e-07, -0.99999994, -0.766044557, -0.642787516, 1.34110451e-07, -0.642787397, 0.766044497, -1.1920929e-07),i)
+				lefthip.C0 = lefthip.C0:lerp(CFrame.new(-0.602340698, -3.0763092, 1.15816879, 0.934456408, 0.351089299, -0.0593911409, -0.312324613, 0.888258517, 0.336823583, 0.171009839, -0.296197772, 0.939692676),i)
+				righthip.C0 = righthip.C0:lerp(CFrame.new(-0.773321152, -3.47119474, -0.0934143066, 0.938373566, 0.344305009, -0.0301536173, -0.334539622, 0.92673558, 0.17101036, 0.0868241563, -0.150384039, 0.98480773),i)
+				neck.C0 = neck.C0:lerp(CFrame.new(-1.90734863e-06, 2, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1),i)
+				heartbeat:wait()
+			end
+			for i = 0.3,0.5 , 0.008 do --rage animation
+				root.C0 = root.C0:lerp(CFrame.new(0, 0, 0, 0.934456408, -0.230774283, -0.271172374, 0.312324822, 0.896951497, 0.312939584, 0.171010077, -0.377122283, 0.910238624),i)
+				rightshoulder.C0 = rightshoulder.C0:lerp(CFrame.new(-0.800001144, 0.642426491, -1.80661774, 1, 0, 0, 0, -0.642787874, 0.766044259, 0, -0.766044259, -0.642787814),i)
+				leftshoulder.C0 = leftshoulder.C0:lerp(CFrame.new(-0.399999619, 0.675328255, 1.86571693, -1.1920929e-07, -1.49011612e-07, -0.99999994, -0.766044557, -0.642787516, 1.34110451e-07, -0.642787397, 0.766044497, -1.1920929e-07),i)
+				lefthip.C0 = lefthip.C0:lerp(CFrame.new(-0.682954788, -3.65747166, 0.0301790237, 0.970848203, 0.216018811, 0.103873909, -0.186457753, 0.952938259, -0.239044309, -0.150623471, 0.212707579, 0.965436697),i)
+				righthip.C0 = righthip.C0:lerp(CFrame.new(-0.934883118, -2.97838402, -1.17556, 0.949593663, 0.283100039, 0.13463366, -0.20653595, 0.88808161, -0.4106749, -0.235827699, 0.362167627, 0.901787043),i)
+				neck.C0 = neck.C0:lerp(CFrame.new(-1.90734863e-06, 2, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1),i)
+				heartbeat:wait()
+			end
+		end
+		raaaaaageeee = false
+		for i = 0,1 , 0.03 do --scream animation
+			root.C0 = root.C0:lerp(CFrame.new(0, 0, 0, 0.939692616, 0.342020154, 0, -0.342020154, 0.939692616, 0, 0, 0, 1),i)
+			rightshoulder.C0 = rightshoulder.C0:lerp(CFrame.new(0, -0.124749184, -2.85422897, 1, 0, 0, 0, 0.766044497, -0.642787635, 0, 0.642787635, 0.766044438),i)
+			leftshoulder.C0 = leftshoulder.C0:lerp(CFrame.new(0, -0.124749184, 2.85422897, 1, 0, 1.49011612e-08, 0, 0.766044378, 0.642787695, 0, -0.642787695, 0.766044378),i)
+			lefthip.C0 = lefthip.C0:lerp(CFrame.new(0.751754761, -3.42638397, 0.5, 0.939692616, -0.342020154, 0, 0.342020154, 0.939692616, 0, 0, 0, 1),i)
+			righthip.C0 = righthip.C0:lerp(CFrame.new(0.563816071, -3.29478741, -0.5, 0.939692616, -0.342020154, 0, 0.342020154, 0.939692616, 0, 0, 0, 1),i)
+			neck.C0 = neck.C0:lerp(CFrame.new(0.446411133, 1.97320461, 0, 0.866025448, 0.499999881, 0, -0.499999881, 0.866025448, 0, 0, 0, 1),i)
+			heartbeat:wait()
+		end
+		raaaaaageeee = true
+		wait(1.5)
+		chasesound:Play()
+		running = true
+		local chasethatplayer = true
+		scphumanoid.WalkSpeed = 78
+		scphumanoid.JumpPower = 98
+		tag.Parent=victimhead
+		local function check() --check if scp is really close to the player
+			while wait() do
+				if not chasethatplayer then
+					break
+				end
+				if (torso.Position - victimhead.Position).magnitude < 15 and chasethatplayer then --if player is closer to scp than 10 studs then kill
+					chasethatplayer = false
+					raaaaaageeee = false
+					running = false
+					for i = 0,0.9 , 0.05 do --scream animation
+						root.C0 = root.C0:lerp(CFrame.new(-0.208377838, -1.18176937, 0, 0.173648149, -0.98480773, 0, 0.98480773, 0.173648149, -1.62028714e-25, -1.59567135e-25, -2.81359876e-26, 1) * CFrame.fromEulerAnglesXYZ(-math.pi/2,0,0),i)
+						rightshoulder.C0 = rightshoulder.C0:lerp(CFrame.new(-1.20717955, 2.69089603, -1.5, -0.866025329, 0.49999994, -1.59567135e-25, -0.49999994, -0.866025329, -2.81359876e-26, 1.52257181e-25, -5.54170842e-26, 1),i)
+						leftshoulder.C0 = leftshoulder.C0:lerp(CFrame.new(-1.20717955, 2.69089603, 1.5, -0.866025329, 0.49999994, -1.59567135e-25, -0.49999994, -0.866025329, -2.81359876e-26, 1.52257181e-25, -5.54170842e-26, 1),i)
+						lefthip.C0 = lefthip.C0:lerp(CFrame.new(0.563815594, -3.29478741, 0.5, 0.939692497, -0.336824059, -0.0593910962, 0.342020094, 0.925416589, 0.163175702, -1.59567135e-25, -0.17364797, 0.984807789),i)
+						righthip.C0 = righthip.C0:lerp(CFrame.new(0.563815594, -3.29478741, -0.5, 0.939692497, -0.342020094, -1.59567135e-25, 0.342020094, 0.939692497, -2.81359876e-26, -1.59567135e-25, 2.81359938e-26, 1),i)
+						neck.C0 = neck.C0:lerp(CFrame.new(0.346410275, 2.19999981, 0, 0.49999994, 0.866025388, -1.59567135e-25, -0.866025388, 0.49999994, -2.81359876e-26, -5.5417078e-26, -1.52257181e-25, 1),i)
+						heartbeat:wait()
+					end
+					face.Texture = "http://www.roblox.com/asset/?id=146142799"
+				
+					killsomeone:Play()
+					chasesound:Stop()
+					screamsound:Stop()
+					sitting = true
+					scphumanoid.WalkSpeed = 0
+					scphumanoid.JumpPower = 0
+					tag.Parent=nil
+					local function playidleandcanchase()
+						wait(5.5)
+						idlesound:Play()
+						canchase = true
+					end
+					spawn(playidleandcanchase)
+					if game.Players:findFirstChild(victim.Name) then
+						local playergui = game.Players[victim.Name]:findFirstChildOfClass("PlayerGui")
+						if playergui then
+							local deathguiclone = deathgui:Clone()
+							deathguiclone.Parent = playergui
+							local function removegui()
+								wait(5)
+								if deathguiclone.Parent ~= nil then
+									deathguiclone:destroy()
+								end
+							end
+							spawn(removegui)
+						end
+					end
+
+					break
+				end
+			end
+		end
+		local howmanymissed = 0
+		local function chase()
+			screamsound:Play()
+			while wait() and chasethatplayer do
+				if victimhumanoid.Health <= 0 then
+					chasethatplayer = false
+					raaaaaageeee = false
+					idlesound:Play()
+					running = false
+					face.Texture = "http://www.roblox.com/asset/?id=146142799"
+					chasesound:Stop()
+					screamsound:Stop()
+					sitting = true
+					scphumanoid.WalkSpeed = 0
+					scphumanoid.JumpPower = 0
+					canchase = true
+					break
+				end
+				local path = game:GetService("PathfindingService"):FindPathAsync(torso.Position, victimhead.Position) --find the path from scp's torso to victims head
+				local waypoints = path:GetWaypoints() --get the every point of the path
+				if path.Status == Enum.PathStatus.Success then
+					for i,v in pairs(waypoints) do --for every point existing..
+						if howmanymissed < 4 then
+							local allow = 0
+							--scphumanoid:MoveTo(v.Position) --...walk to it
+							
+							while (torso.Position - v.Position).magnitude > 8 and allow < 20 do --if scp is further than 8 studs, keep walking to it
+								allow = allow + 1 
+							--	scphumanoid:MoveTo(v.Position)
+								heartbeat:wait()
+							end
+							if allow == 20 then
+								howmanymissed = howmanymissed + 1
+							end
+							if v.Action == Enum.PathWaypointAction.Jump then
+								scphumanoid.Jump = true
+							end
+							--scphumanoid.WalkToPoint = victimhead.Position
+						end
+					end
+					howmanymissed = 0
+					--scphumanoid.WalkToPoint = victimhead.Position
+				end
+			end
+		end
+		spawn(check) --run that check function
+		spawn(chase) --chase
+	end
+end
+
+function dead()
+	ragdollkill(scp)
+	ragesound:stop()
+	idlesound:stop()
+	screamsound:stop()
+	killsomeone:stop()
+	chasesound:stop()
+end
+scphumanoid.Died:connect(dead)
+
+function check4ppl()
+	while wait() do
+		for i,v in pairs(workspace:GetChildren()) do --scans all the characters
+			if v.ClassName == "Model" and v.Name ~= scp.Name and canchase then --if player is even spawned
+				local victimhead = v:findFirstChild("Head") --finds head
+				local humanoid = v:findFirstChildOfClass("Humanoid") --finds humanoid
+				if humanoid and victimhead then --if script found humanoid and head
+					if (victimhead.Position - head.Position).magnitude < sight and humanoid.Health > 0 then
+						chase(v) --chase who
+					end
+				end
+			end
+		end
+	end
+end
+
+spawn(check4ppl)
+game:GetService("RunService").Heartbeat:Connect(function(step)
+if sitting == true then
+    tors.C1 = CFrame.new(0,-2,0)*CFrame.Angles(math.rad(90),math.rad(180),math.rad(90))
+end    
+if sitting == false then
+    tors.C1 = CFrame.new(0,-2,0)*CFrame.Angles(math.rad(90),math.rad(180),math.rad(90))
+end    
+end)
+while heartbeat:wait() do --check animations and other things
+	if running then --this is the walking animation
+		for i = 0,0.75 , 0.05 do
+			if running then
+				rightshoulder.C0 = rightshoulder.C0:lerp(CFrame.new(-2.19622421, 2.27327061, -1.57830048, -0.351089299, 0.888258278, -0.296198368, -0.754010975, -0.455760926, -0.473021507, -0.55516088, 0.0572640449, 0.829769373),i)
+				leftshoulder.C0 = leftshoulder.C0:lerp(CFrame.new(-2.31931305, 1.76000595, 1.52594185, -0.336824059, 0.903335214, 0.26558435, -0.820529103, -0.41995579, 0.387774497, 0.461824089, -0.0873079151, 0.882664025),i)
+				lefthip.C0 = lefthip.C0:lerp(CFrame.new(1.21138191, -3.04071045, 0.5, 0.766044378, -0.642787695, 0, 0.642787695, 0.766044378, 0, 0, 0, 1),i)
+				righthip.C0 = righthip.C0:lerp(CFrame.new(-2.25595284, -1.97990799, -0.5, 0.342020154, 0.939692616, 0, -0.939692616, 0.342020154, 0, 0, 0, 1),i)
+				neck.C0 = neck.C0:lerp(CFrame.new(0.446409225, 1.97320557, 0, 0.866025448, 0.499999911, 0, -0.499999911, 0.866025448, 0, 0, 0, 1),i)
+				root.C0 = root.C0:lerp(CFrame.new(0, 0, 0, 0.866025448, -0.499999911, 0, 0.499999911, 0.866025448, 0, 0, 0, 1) * CFrame.fromEulerAnglesXYZ(0,-math.pi/2,0) * CFrame.fromEulerAnglesXYZ(-0.5,0,0) * CFrame.fromEulerAnglesXYZ(0,0,0.5),i)
+				heartbeat:wait()
+			end
+		end
+		for i = 0,0.75 , 0.05 do
+			if running then
+				rightshoulder.C0 = rightshoulder.C0:lerp(CFrame.new( -2.27283096, 1.94459152, -1.79301262, -0.191510916, 0.935729742, -0.296198308, -0.821698189, -0.317904055, -0.473021477, -0.53678298, 0.15279679, 0.829769492),i)
+				leftshoulder.C0 = leftshoulder.C0:lerp(CFrame.new(-2.07076645, 2.13161564, 1.51448631, -0.48856923, 0.831122816, 0.26558429, -0.735139072, -0.556058884, 0.387774587, 0.469968796, -0.00578667223, 0.882664025),i)
+				lefthip.C0 = lefthip.C0:lerp(CFrame.new(-2.51899147, -1.46453857, 0.5, 0.173648268, 0.98480773, 0, -0.98480773, 0.173648268, 0, 0, 0, 1),i)
+				righthip.C0 = righthip.C0:lerp(CFrame.new(1.8448391, -2.40829563, -0.5, 0.342020154, -0.939692557, 0, 0.939692557, 0.342020154, 0, 0, 0, 1),i)
+				neck.C0 = neck.C0:lerp(CFrame.new(0.446409225, 1.97320557, 0, 0.866025448, 0.499999911, 0, -0.499999911, 0.866025448, 0, 0, 0, 1),i)
+				root.C0 = root.C0:lerp(CFrame.new(0, 0, 0, 0.866025448, -0.499999911, 0, 0.499999911, 0.866025448, 0, 0, 0, 1) * CFrame.fromEulerAnglesXYZ(0,-math.pi/2,0) * CFrame.fromEulerAnglesXYZ(-0.5,0,0) * CFrame.fromEulerAnglesXYZ(0,0,0.5),i)
+				heartbeat:wait()
+			end
+		end
+	end
+	if sitting then --this is the sitting animation
+		for i = 0,0.15 , 0.002 do
+			if sitting then
+				root.C0 = root.C0:lerp(CFrame.new(0.277837753, -3.77569246, 0, 0.98480773, -0.173648298, 0, 0.173648298, 0.98480773, 0, 0, 0, 1),i)
+				rightshoulder.C0 = rightshoulder.C0:lerp(CFrame.new(-1.53501892, 0.0072479248, -0.936183929, 0.499999881, 0.813797832, 0.296198159, -0.866025567, 0.469846159, 0.171010077, 5.96046448e-08, -0.342020154, 0.939692616),i)
+				leftshoulder.C0 = leftshoulder.C0:lerp(CFrame.new(-1.73340797, 0.030960083, 1.0417347, 0.469846249, 0.742043018, -0.478138745, -0.866025567, 0.492403746, -0.0868242159, 0.171009973, 0.454874337, 0.873982251),i)
+				lefthip.C0 = lefthip.C0:lerp(CFrame.new(-1.88126564, 0.0378093719, 0.5, 0.766044378, 0.642787695, 0, -0.642787695, 0.766044378, 0, 0, 0, 1),i)
+				righthip.C0 = righthip.C0:lerp(CFrame.new(-1.77682304, 0.0369753838, -0.5, 0.766044378, 0.642787695, 0, -0.642787695, 0.766044378, 0, 0, 0, 1),i)
+				neck.C0 = neck.C0:lerp(CFrame.new(-0.18793869, 1.93159628, 0, 0.939692616, -0.342020154, 0, 0.342020154, 0.939692616, 0, 0, 0, 1),i)
+				heartbeat:wait()
+			end
+		end
+		if sitting then
+			wait(math.random(5,15))
+		end
+		for i = 0,0.15 , 0.002 do
+			if sitting then
+
+				root.C0 = root.C0:lerp(CFrame.new(0.549342155, -3.9154768, 0, 0.99999994, 2.98023224e-08, 0, -2.98023224e-08, 0.99999994, -1.62028714e-25, 4.82883198e-33, -1.62028702e-25, 1),i)
+				rightshoulder.C0 = rightshoulder.C0:lerp(CFrame.new(0.246704102, 1.18243062, -1.44592857, -0.58682394, 0.492403716, 0.642787635, -0.642787457, -0.766044378, -2.80971442e-08, 0.492403954, -0.413175941, 0.766044259),i)
+				leftshoulder.C0 = leftshoulder.C0:lerp(CFrame.new(-0.045042038, 1.23536623, 1.41781616, -0.68977493, 0.291755378, -0.662637949, -0.587524116, -0.760397375, 0.276786745, -0.4231143, 0.580236554, 0.695916593),i)
+				lefthip.C0 = lefthip.C0:lerp(CFrame.new(-1.96706343, -0.110518813, 0.5, 0.766044319, 0.642787457, 4.82883198e-33, -0.642787457, 0.766044319, -1.62028702e-25, 1.04150039e-25, -1.24121187e-25, 1),i)
+				righthip.C0 = righthip.C0:lerp(CFrame.new(-2.03226805, -0.104752898, -0.5, 0.766044378, 0.642787516, 4.82883198e-33, -0.642787516, 0.766044378, -1.62028702e-25, 1.04150051e-25, -1.24121199e-25, 1),i)
+				neck.C0 = neck.C0:lerp(CFrame.new(-0.892820358, 1.94641006, 0, 0.866025269, -0.49999994, 4.82883198e-33, 0.49999994, 0.866025269, -1.62028702e-25, -8.10143448e-26, -1.40320975e-25, 1),i)
+				heartbeat:wait()
+			end
+		end
+		if sitting then
+			wait(math.random(5,15))
+		end
+	end
+end
+
